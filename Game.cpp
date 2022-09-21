@@ -329,6 +329,15 @@ void Game::drawHelpMenu()
 	coord.Y = 18;
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 	cout << "ESC - menu" << endl;
+
+	getMenuHelpInput();
+}
+
+void Game::getMenuHelpInput()
+{
+	if (_kbhit())
+		if (_getch() == ESCAPE_KEY)
+			menuSelectedItem = 1;
 }
 
 Game::Game()
