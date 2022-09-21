@@ -273,6 +273,64 @@ void Game::getMenuInput()
 	}
 }
 
+void Game::drawHelpMenu()
+{
+	menuClear = false;
+	if (!helpMenuClear)
+		system("cls");
+	helpMenuClear = true;
+
+	COORD coord;
+	coord.X = 8;
+	coord.Y = 2;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "PLAYER 1:" << endl;
+
+	coord.X = 39;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "PLAYER 2:" << endl;
+
+
+	coord.X = 7;
+	coord.Y = 4;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "w - move up" << endl;
+
+	coord.X = 35;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "UP ARROW - move up" << endl;
+
+	coord.X = 6;
+	coord.Y = 6;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "s - move down" << endl;
+
+	coord.X = 32;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "DOWN ARROW - move down" << endl;
+
+
+	coord.X = 26;
+	coord.Y = 12;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "GAME:" << endl;
+
+	coord.X = 22;
+	coord.Y = 14;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "g - start game" << endl;
+
+	coord.X = 21;
+	coord.Y = 16;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "r - restart game" << endl;
+
+	coord.X = 24;
+	coord.Y = 18;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	cout << "ESC - menu" << endl;
+}
+
 Game::Game()
 	:mapWidth{ 60 }, mapHeight{ 20 }, ball{ new Ball(mapWidth / 2, mapHeight / 2) }, 
 	player1{ new Player(2, mapHeight / 2 - 2) }, player2{ new Player(mapWidth - 3, mapHeight / 2 - 2) }, gameOver{ false }
@@ -284,6 +342,8 @@ void Game::run()
 	{
 		if (menuSelectedItem < 3)
 			drawMenu();
+		else if (menuSelectedItem == 4)
+			drawHelpMenu();
 		else
 		{
 			Sleep(20);
