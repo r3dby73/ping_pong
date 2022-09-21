@@ -3,7 +3,13 @@
 #include "Game.h"
 #include <iostream>
 #include <Windows.h>
+#include <conio.h>
 using namespace std;
+
+#define UP_ARROW 72
+#define DOWN_ARROW 80
+#define ENTER_KEY 13
+#define ESCAPE_KEY 27
 
 void Game::redrawMap()
 {
@@ -102,6 +108,52 @@ void Game::drawMap()
 	cout << "Score: " << player1->getScore() << "\t\t\t\t\t  Score: " << player2->getScore() << endl;
 }
 
+void Game::getGameInput()
+{
+	ball->checkDirection();
+	size_t player1Y = player1->getY();
+	size_t player2Y = player2->getY();
+
+	if (_kbhit())
+	{
+		switch (_getch())
+		{
+		case 'w':
+			if (player1Y > 0)
+				player1->moveUp();
+			break;
+
+		case 's':
+			if (player1Y < mapHeight - 4)
+				player1->moveDown();
+			break;
+
+		case UP_ARROW:
+			if (player2Y > 0)
+				player2->moveUp();
+			break;
+
+		case DOWN_ARROW:
+			if (player2Y < mapHeight - 4)
+				player2->moveDown();
+				break;
+
+		case 'g':
+			if (ball->getDirection() == STOP)
+				ball->randDirection();
+			break;
+
+		case 'r':
+			resetGame();
+			break;
+
+		case ESCAPE_KEY:
+			menuSelectedItem = 0;
+			break;
+		}
+	}
+}
+
 Game::Game()
 	:mapWidth{ 60 }, mapHeight{ 20 }, ball{ new Ball(mapWidth / 2, mapHeight / 2) }, 
 	player1{ new Player(2, mapHeight / 2 - 2) }, player2{ new Player(mapWidth - 3, mapHeight / 2 - 2) }, gameOver{ false }
@@ -111,6 +163,8 @@ void Game::run()
 {
 	while (!gameOver)
 	{
+		Sleep(20);
 		drawMap();
+		getGameInput();
 	}
 }
