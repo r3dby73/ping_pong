@@ -197,6 +197,43 @@ inline void Game::resetGame()
 	player2->reset();
 }
 
+void Game::drawMenu()
+{
+	system("color 7");
+
+	helpMenuClear = false;
+	if (!menuClear)
+		system("cls");
+	menuClear = true;
+
+	COORD coord;
+	CONSOLE_CURSOR_INFO curInfo;
+	curInfo.bVisible = false;
+	curInfo.dwSize = 1;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+
+	const char* menuItems[]{ "   PLAY   ", "   HELP   ", "   EXIT   " };
+	const char* menuSelectedItems[]{ ">> PLAY <<", ">> HELP <<", ">> EXIT <<" };
+
+	for (size_t i = 0, j = 0; i < 3; i++, j += 2)
+	{
+		if (i == menuSelectedItem)
+		{
+			coord.X = (mapWidth / 2) - (strlen(menuSelectedItems[menuSelectedItem]) / 2);
+			coord.Y = mapHeight / 2 + j;
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+			cout << menuSelectedItems[menuSelectedItem] << endl;
+		}
+		else
+		{
+			coord.X = (mapWidth / 2) - (strlen(menuItems[i]) / 2);
+			coord.Y = mapHeight / 2 + j;
+			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+			cout << menuItems[i] << endl;
+		}
+	}
+}
+
 Game::Game()
 	:mapWidth{ 60 }, mapHeight{ 20 }, ball{ new Ball(mapWidth / 2, mapHeight / 2) }, 
 	player1{ new Player(2, mapHeight / 2 - 2) }, player2{ new Player(mapWidth - 3, mapHeight / 2 - 2) }, gameOver{ false }
@@ -206,9 +243,14 @@ void Game::run()
 {
 	while (!gameOver)
 	{
-		Sleep(20);
-		drawMap();
-		getGameInput();
-		collisionLogic();
+		if (menuSelectedItem < 3)
+			drawMenu();
+		else
+		{
+			Sleep(20);
+			drawMap();
+			getGameInput();
+			collisionLogic();
+		}
 	}
 }
