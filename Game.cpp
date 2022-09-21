@@ -5,8 +5,21 @@
 #include <Windows.h>
 using namespace std;
 
+void Game::redrawMap()
+{
+	COORD coord;
+	CONSOLE_CURSOR_INFO curInfo;
+	coord.X = 0;
+	coord.Y = 0;
+	curInfo.bVisible = false;
+	curInfo.dwSize = 1;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+}
+
 void Game::drawMap()
 {
+	redrawMap();
 	size_t player1X = player1->getX();
 	size_t player1Y = player1->getY();
 	size_t player2X = player2->getX();
