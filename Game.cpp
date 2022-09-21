@@ -154,6 +154,42 @@ void Game::getGameInput()
 	}
 }
 
+void Game::collisionLogic()
+{
+	size_t ballX = ball->getX();
+	size_t ballY = ball->getY();
+	direction ballDir = ball->getDirection();
+	size_t player1X = player1->getX();
+	size_t player1Y = player1->getY();
+	size_t player2X = player2->getX();
+	size_t player2Y = player2->getY();
+
+	if (ballY == 0)
+		(ballDir == UPLEFT) ? ball->setDirection(DOWNLEFT) : ball->setDirection(DOWNRIGHT);
+	if (ballY == mapHeight)
+		(ballDir == DOWNLEFT) ? ball->setDirection(UPLEFT) : ball->setDirection(UPRIGHT);
+
+	if (ballX - 1 == player1X)
+		for (size_t i = 0; i < 4; i++)
+			if (ballY == player1Y + i)
+				(ballDir == DOWNLEFT) ? ball->setDirection(DOWNRIGHT) : ball->setDirection(UPRIGHT);
+	if (ballX + 1 == player2X)
+		for (size_t i = 0; i < 4; i++)
+			if (ballY == player2Y + i)
+				(ballDir == DOWNRIGHT) ? ball->setDirection(DOWNLEFT) : ball->setDirection(UPLEFT);
+
+	if (ballX < player1X)
+	{
+		player2->scoreUp();
+		resetGame();
+	}
+	if (ballX > player2X)
+	{
+		player1->scoreUp();
+		resetGame();
+	}
+}
+
 Game::Game()
 	:mapWidth{ 60 }, mapHeight{ 20 }, ball{ new Ball(mapWidth / 2, mapHeight / 2) }, 
 	player1{ new Player(2, mapHeight / 2 - 2) }, player2{ new Player(mapWidth - 3, mapHeight / 2 - 2) }, gameOver{ false }
@@ -166,5 +202,6 @@ void Game::run()
 		Sleep(20);
 		drawMap();
 		getGameInput();
+		collisionLogic();
 	}
 }
