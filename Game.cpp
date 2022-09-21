@@ -232,6 +232,45 @@ void Game::drawMenu()
 			cout << menuItems[i] << endl;
 		}
 	}
+	getMenuInput();
+}
+
+void Game::getMenuInput()
+{
+	if (_kbhit())
+	{
+		switch (_getch())
+		{
+		case 'w':
+		case UP_ARROW:
+			if (menuSelectedItem > 0)
+				menuSelectedItem--;
+			break;
+
+		case 's':
+		case DOWN_ARROW:
+			if (menuSelectedItem < 2)
+				menuSelectedItem++;
+			break;
+
+		case ENTER_KEY:
+			switch (menuSelectedItem)
+			{
+			case 0:
+				menuSelectedItem = 3;
+				break;
+
+			case 1:
+				menuSelectedItem = 4;
+				break;
+
+			case 2:
+				gameOver = true;
+				break;
+			}
+			break;
+		}
+	}
 }
 
 Game::Game()
